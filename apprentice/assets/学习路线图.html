@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>领域学徒 · 通用自学路径全景图</title>
+<style>
+  :root{
+    --paper:#faf9f5; --ink:#2b2a26; --muted:#7a7568; --line:#e5e1d8;
+    --p0:#6b7280; --p1:#3b74b8; --p2:#0e8a7b; --p3:#c07c15; --p4:#b3453e; --p5:#7c5cbf;
+    --gate:#a86a00; --gatebg:#fff7e0;
+    --loop:#8a6d1f; --sys:#4a5568;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;padding:0 16px 80px}
+  .wrap{max-width:1080px;margin:0 auto}
+  header{padding:36px 0 8px;text-align:center}
+  header h1{font-size:26px;letter-spacing:1px}
+  header .sub{color:var(--muted);font-size:14px;margin-top:6px}
+  nav{position:sticky;top:0;z-index:9;background:var(--paper);border-bottom:1px solid var(--line);margin:18px 0 30px;padding:10px 0;text-align:center}
+  nav a{display:inline-block;margin:0 10px;font-size:14px;color:var(--p1);text-decoration:none;padding:4px 10px;border-radius:14px}
+  nav a:hover{background:#eef4fb}
+  h2.part{font-size:20px;margin:46px 0 6px;padding-left:12px;border-left:5px solid var(--p1)}
+  h2.part .en{font-size:12px;color:var(--muted);font-weight:normal;margin-left:8px}
+  p.lead{color:var(--muted);font-size:14px;margin-bottom:22px;padding-left:17px}
+
+  /* ---------- 流程卡片通用 ---------- */
+  .stage-card{background:#fff;border:1px solid var(--line);border-left:6px solid var(--p1);border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.05);margin:0 0 0 0}
+  .stage-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:14px 18px 4px}
+  .ph{display:inline-block;font-size:13px;font-weight:bold;color:#fff;border-radius:4px;padding:2px 10px;letter-spacing:1px}
+  .stage-head h3{font-size:17px}
+  .stage-head .goal{font-size:13px;color:var(--muted)}
+  .stage-body{display:grid;grid-template-columns:1fr 320px;gap:0}
+  @media(max-width:820px){.stage-body{grid-template-columns:1fr}}
+  .acts{padding:8px 18px 14px}
+  .acts ol{padding-left:22px}
+  .acts li{font-size:14px;margin:7px 0}
+  .acts li b{color:var(--ink)}
+  .meta{border-left:1px dashed var(--line);padding:10px 16px 14px;font-size:13px}
+  .meta .blk{margin:8px 0}
+  .meta .blk h4{font-size:12px;color:var(--muted);font-weight:bold;letter-spacing:1px;margin-bottom:2px}
+  .meta .produce{color:var(--p2)}
+  .meta .pit{color:var(--p4)}
+  .chips{padding:0 18px 14px}
+  .chip{display:inline-block;font-size:12px;background:#f0f4f8;color:var(--sys);border-radius:12px;padding:2px 10px;margin:3px 4px 0 0}
+  .loopmark{display:inline-block;font-size:12px;color:var(--loop);border:1px dashed var(--loop);border-radius:10px;padding:0 8px;margin-left:8px}
+
+  /* 门控 */
+  .flow-arrow{display:flex;flex-direction:column;align-items:center;margin:6px 0}
+  .flow-arrow .line{width:2px;height:16px;background:var(--muted)}
+  .flow-arrow .tri{width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:9px solid var(--muted)}
+  .gate{align-self:center;background:var(--gatebg);border:1.5px solid var(--gate);color:var(--gate);border-radius:18px;font-size:13px;font-weight:bold;padding:5px 18px;margin:4px 0;text-align:center;max-width:92%}
+  .gate small{font-weight:normal;display:block;font-size:12px;color:#8a6d1f}
+
+  /* 支撑系统带 */
+  .sys-band{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 10px}
+  @media(max-width:820px){.sys-band{grid-template-columns:1fr}}
+  .sys{background:#f4f6fa;border:1px solid #dbe2ec;border-radius:8px;padding:12px 14px;font-size:13px}
+  .sys h4{color:var(--sys);font-size:14px;margin-bottom:6px}
+  .sys ul{padding-left:18px}
+  .sys li{margin:4px 0}
+
+  /* 回环 */
+  .loop-box{border:1.5px dashed var(--loop);background:#fdfaf0;border-radius:8px;padding:14px 18px;margin:16px 0;font-size:13.5px}
+  .loop-box h4{color:var(--loop);margin-bottom:8px}
+  .loop-box table{width:100%;border-collapse:collapse}
+  .loop-box td{padding:4px 8px;border-bottom:1px dotted #e2d9c2;vertical-align:top}
+  .loop-box td:first-child{white-space:nowrap;color:var(--loop);font-weight:bold}
+
+  /* 铁律九宫格 */
+  .law-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}
+  @media(max-width:820px){.law-grid{grid-template-columns:1fr}}
+  .law{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:13px}
+  .law b{display:block;color:var(--p4);margin-bottom:4px;font-size:13.5px}
+
+  /* RSI 循环 */
+  .rsi{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;padding:16px 10px 6px}
+  .rsi .node{background:#fdf1f0;border:1.5px solid var(--p4);color:var(--p4);border-radius:8px;font-size:13.5px;font-weight:bold;padding:8px 14px;text-align:center;min-width:110px}
+  .rsi .a{color:var(--p4);font-size:20px;font-weight:bold}
+  .rsi-note{text-align:center;color:var(--muted);font-size:13px;padding:0 14px 16px}
+
+  /* 映射表 / 备注表 */
+  table.map{width:100%;border-collapse:collapse;background:#fff;font-size:13.5px;margin:12px 0}
+  table.map th{background:#eef0ee;border:1px solid var(--line);padding:8px 10px;font-size:13px}
+  table.map td{border:1px solid var(--line);padding:8px 10px;vertical-align:top}
+  table.map td:first-child{white-space:nowrap;font-weight:bold}
+
+  .note{background:#fffdf4;border:1px solid #eadfb8;border-radius:8px;padding:14px 18px;margin:16px 0;font-size:13.5px}
+  .note h4{color:#8a6d1f;margin-bottom:6px}
+  .pattern-list{columns:2;column-gap:26px;font-size:13.5px;margin:10px 0;padding-left:20px}
+  @media(max-width:820px){.pattern-list{columns:1}}
+  .pattern-list li{margin:6px 0;break-inside:avoid}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:50px;border-top:1px solid var(--line);padding-top:16px}
+
+  /* Part1 专属微调 */
+  .c0{border-left-color:var(--p0)} .c0 .ph{background:var(--p0)}
+  .c1{border-left-color:var(--p1)} .c1 .ph{background:var(--p1)}
+  .c2{border-left-color:var(--p2)} .c2 .ph{background:var(--p2)}
+  .c3{border-left-color:var(--p3)} .c3 .ph{background:var(--p3)}
+  .c4{border-left-color:var(--p4)} .c4 .ph{background:var(--p4)}
+  .c5{border-left-color:var(--p5)} .c5 .ph{background:var(--p5)}
+  .entry{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:14px 18px;font-size:14px;text-align:center}
+  .entry b{display:block;font-size:15px;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>学徒 Skill · 通用自学路径全景图</h1>
+  <div class="sub">Part 1 现有 Skill 学习路线（AI 视角）&nbsp;·&nbsp;Part 2 通用自学路径（人类学习视角，可复现）&nbsp;·&nbsp;Part 3 同源映射&nbsp;·&nbsp;Part 4 通用性总结与领域备注</div>
+</header>
+
+<nav>
+  <a href="#s1">① Skill 学习路线</a>
+  <a href="#s2">② 通用自学路径</a>
+  <a href="#s3">③ 同源映射</a>
+  <a href="#s4">④ 通用性与备注</a>
+</nav>
+
+<!-- ================= PART 1 ================= -->
+<h2 class="part" id="s1">Part 1 · 学徒 Skill 的学习路线与方法<span class="en">AI 进入新领域的四阶段标准作业程序</span></h2>
+<p class="lead">原型：甲骨文 AI 辅助破译项目（六轮实战验证）。核心思想：AI 是学徒，行业共识是师傅——SOP 从行业方法翻译而来，不由 AI 发明；每阶段有验收门，未达标不得升级。</p>
+
+<div class="sys-band" style="margin-top:14px">
+  <div class="sys"><h4>通识轨（懂领域）——领域课程学习循环</h4><ul>
+    <li><b>六类标准模块</b>：基础概念 → 理论方法 → 工具实践 → 历史流派 → 经典公案 → 前沿开放</li>
+    <li><b>每模块循环</b>：学（带3问分层读）→ 织（概念卡+地图挂网）→ 测（自测≥80%）→ 联（跨模块+互喂）</li>
+    <li><b>验收</b>：自测＋费曼卡壳清零双过才算"已通过"；审核环节含"领域讲解"考核</li>
+  </ul></div>
+  <div class="sys"><h4>实战轨（会做事）——四阶段任务闭环（本图主体）</h4><ul>
+    <li>侦察立法 → 最小闭环 → 审查对拍 → RSI 自循环（每阶段嵌入对应通识模块）</li>
+    <li><b>两轨强制互喂（铁律⑫）</b>：模块知识喂实战证据链；实战缺口回课程补模块；每案结档必回喂课程</li>
+    <li>禁止"只会做题不懂领域"，也禁止"懂名词不会干活"</li>
+  </ul></div>
+</div>
+
+<div class="entry">
+  <b>第零步 · 阶段定位（每次触发先做）</b>
+  检查工作区已有文档与总进度 → 判断当前所处阶段 → 从对应阶段进入，不从头重来；全新项目则冷启动（先确认：领域名、目标产出、验收标准谁定）
+</div>
+<div class="flow-arrow"><div class="line"></div><div class="tri"></div></div>
+
+<div class="stage-card c1">
+  <div class="stage-head"><span class="ph">阶段一</span><h3>侦察立法</h3><span class="goal">广泛调研 + 文献调研 → 固化标准 SOP + 预留 AI 接口</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>领域现状报告</b>：现状与难点 / 前人工作全景 / <b>AI 能做什么不能做什么</b>（定位通常＝全量材料的机器检索+组合推理，人做最终裁决）</li>
+      <li><b>资源清单</b>：数据集、平台、文献，按 ★★★核心 / ★★支撑 / ★补充 分级，附来源与许可证</li>
+      <li><b>方法论体系</b>（SOP 的灵魂）：解剖 2–4 个标杆从业者案例——他们靠什么证据下结论、证据如何加权</li>
+      <li><b>SOP v1</b>：端到端流程拆阶段，每步写明输入→输出 / 工具 / 执行者（人工·AI·协同），附固定作业模板</li>
+      <li><b>接口预留</b>：数据（结构化入库可检索）/ 工具（一次性脚本不服务化）/ 记忆（进度文档＋mem0）/ 分工（每步标注，逐步自动化）</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">现状报告 · 资源清单 · 方法论体系 · SOP v1</span></div>
+      <div class="blk"><h4>学习法注解</h4>＝先看地图再上路（广度优先）<br>＝把师傅的口传心授写成操作手册</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">忍不住提前做真任务；调研引用不带来源；SOP 由 AI 凭空发明而非翻译行业共识</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="flow-arrow"><div class="gate">◆ 验收门 1：五件套齐备（现状报告/资源清单/方法论体系/SOP v1/知识总账）<small>未达标 → 留在本阶段补齐</small></div><div class="tri"></div></div>
+
+<div class="stage-card c2">
+  <div class="stage-head"><span class="ph">阶段二</span><h3>最小闭环</h3><span class="goal">典型案例盲测 + 已知答案验收 → 跑通最小闭环</span><span class="loopmark">↩ 可回阶段一</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>材料基建</b>：核心数据下载、清洗、切分、元数据、检索索引；入库即写统计报告与数据质量坑</li>
+      <li><b>盲测校准</b>：已知答案样本匿名打乱，用当前 SOP 独立作答，量化命中率——重点不是分数，是<b>失效模式逐条转化为新规则</b></li>
+      <li><b>验收组</b>：选 3–5 个有公认标准答案的案例，走与真实任务<b>完全相同</b>的流程，最后对照标准答案打分</li>
+      <li><b>SOP 升级 v2</b>：证据分级加权表（裁决性 / 入门券 / 支撑 / 跃迁桥 / 先验缩域 / 可证伪）＋裁决规则＋五档置信度</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">结构化语料库 · 盲测校准报告 · 验收报告 · SOP v2</span></div>
+      <div class="blk"><h4>学习法注解</h4>＝摸底考（盲测）<br>＝做真题对答案（验收组）<br>＝错题本（失效→规则）</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">降低验收标准放行自己；只看分数不分析失效根因</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="flow-arrow"><div class="gate">◆ 验收门 2：验收组复现率 ≥80%（或与用户约定线）<small>不达标 → 回修 SOP 再来，禁止带病升级</small></div><div class="tri"></div></div>
+
+<div class="stage-card c3">
+  <div class="stage-head"><span class="ph">阶段三</span><h3>审查对拍（出师考核）</h3><span class="goal">可控人工审查 + 行业共识对照 → 确认真懂</span><span class="loopmark">↩ 可回阶段二</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>独立审核（制审分离）</b>：审核者与制档者分离；审核者<b>禁止采信档案文字，必须从原始数据独立查证</b>；禁止自我放行。重点揪三类病：证据描述失实 / 引文加工与选择性引用 / 置信度 overclaim</li>
+      <li><b>整改与红线固化</b>：逐条整改 → 系统性问题升格为红线写进 SOP（图像二次核对 / 残缺禁补写 / 主导模式强制展示 / 同源完整上下文强制调取 / 审核后定稿）</li>
+      <li><b>行业共识对拍</b>：已认定结论与已发表权威成果逐条对拍；被推翻就改，教训固化（对拍先于发布）</li>
+      <li><b>诚实定性报告</b>：复现 ≠ 新发现；标注哪些是复现、哪些是增量、距行业认可标准差什么（差距清单）</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">独立审核报告 · 整改记录 · 对拍报告 · 诚实定性报告 · SOP v2.1+（红线）</span></div>
+      <div class="blk"><h4>学习法注解</h4>＝请老师盲批（审核者不看你的答案自己查）<br>＝和标准答案对拍<br>＝出师资格考试</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">审核者复读档案（假审）；审核是走形式，不挤水分</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="flow-arrow"><div class="gate">◆ 验收门 3：独立审核通过（无未整改系统问题）＋ 对拍完成 ＋ 定性报告出具<small>此门过后才有资格进入无人值守 RSI 循环</small></div><div class="tri"></div></div>
+
+<div class="stage-card c4">
+  <div class="stage-head"><span class="ph">阶段四</span><h3>RSI 自循环（出师执业）</h3><span class="goal">AI 自己 loop 多轮 → 批量学习与开发 → 完整成果</span></div>
+  <div class="rsi">
+    <div class="node">① 选目标<br><small style="font-weight:normal">目标池按产出概率重排（先易后难）</small></div><span class="a">→</span>
+    <div class="node">② 批量作业<br><small style="font-weight:normal">按 SOP 逐案建档，一案一档</small></div><span class="a">→</span>
+    <div class="node">③ 独立审核<br><small style="font-weight:normal">制审分离不放松，全查→抽查阶梯</small></div><span class="a">→</span>
+    <div class="node">④ 规则升级<br><small style="font-weight:normal">教训固化·通道制度化·目标池更新</small></div><span class="a">↻</span>
+  </div>
+  <div class="rsi-note">每轮必含全部四步（缺一即退化为准 RSI）· 方法论突破即时制度化（个案技巧→全量能力）· 循环 N 轮</div>
+  <div class="chips">
+    <span class="chip">成果沉淀三件套：单案档案（含已排除假设）· 每轮小结 · 总进度滚动更新</span>
+    <span class="chip">跨会话记忆：mem0 + 知识库 Inbox</span>
+    <span class="chip">对外成果：按行业认可格式整理 + 诚实定性</span>
+    <span class="chip">学习法注解：＝终身执业 + 继续教育 + 每年考核</span>
+  </div>
+</div>
+
+<div class="flow-arrow"><div class="line"></div><div class="tri"></div></div>
+
+<div class="note"><h4>▎十一条通用铁律（全阶段贯穿，Part 2 通用路径同样成立）</h4>
+  ① 可核查性压倒一切（结论落到原始材料，记忆性证据标"待核对"）② SOP 从行业共识翻译而来，不由 AI 发明 ③ 已知答案验收是唯一硬标准 ④ 先易后难 ⑤ 置信分档输出，降档不可耻 ⑥ 淘汰不丢（否决假设归档防重复劳动）⑦ 错误变制度，同类错误不犯第二次 ⑧ 诚实定性：复现 ≠ 新发现 ⑨ 对拍先于发布 ⑩ 来源三级标注：〔已验证·有出处〕/〔模型记忆·待核对〕/〔未知·缺口〕，"未知"必须显式声明，禁止用记忆填充冒充知识 ⑪ 能力边界自知：未测试任务类型＝能力未知，超纲即降档并触发补缺，禁止硬答
+</div>
+
+<div class="note"><h4>▎贯穿机制 · 知识完整性与缺口管理（会做题 ≠ 行业能力；乱答只来自隐性知识）</h4>
+  <table class="map" style="margin:8px 0">
+    <tr><th>行业知识的七种存在形态</th><th>载体</th><th>可信度</th></tr>
+    <tr><td>① 程序性（怎么做）</td><td>SOP 工作流文档</td><td>高（经审核）</td></tr>
+    <tr><td>② 判别性（凭什么下结论）</td><td>方法论体系 / 证据权重表</td><td>高（译自行业共识）</td></tr>
+    <tr><td>③ 事实性（原材料）</td><td>结构化语料库</td><td>高（原始材料）</td></tr>
+    <tr><td>④ 案例性（这题怎么解的）</td><td>单案研究档案</td><td>中–高</td></tr>
+    <tr><td>⑤ 失败性（什么会错）</td><td>红线 / 错题本 / 已排除假设</td><td>高</td></tr>
+    <tr><td>⑥ 元知识（进展/缺口/教训）</td><td>总进度 / 总账 / 登记簿 / 画像</td><td>高</td></tr>
+    <tr><td style="color:var(--p4);font-weight:bold">⑦ 领域通识（背景直觉）</td><td style="color:var(--p4)">模型权重（隐性）</td><td style="color:var(--p4)">不可证 ← 乱答之源</td></tr>
+  </table>
+  <b>对策不是"让模型不乱答"，而是逼每条论断声明来自哪一行。</b>供应侧完整性靠<b>权威普查工件对照</b>（教材目录/考纲/分类总录/数据集类目/招聘JD/社区FAQ 逐区 diff 出覆盖率）；真实能力靠<b>任务空间地图（类型×难度）+ 分层抽测 + 能力画像</b>度量，未测试＝未知。
+</div>
+
+<div class="stage-card c3" style="border-left-color:var(--loop)">
+  <div class="stage-head"><span class="ph" style="background:var(--loop)">缺口循环</span><h3>缺口驱动学习循环（主动补缺，Phase 全程可触发）</h3><span class="goal">让缺失部分主动暴露，而不是等任务失败才发现</span></div>
+  <div class="rsi" style="padding-top:12px">
+    <div class="node" style="border-color:var(--loop);color:var(--loop);background:#fdfaf0">① 覆盖巡检<br><small style="font-weight:normal">定期普查工件diff / 任务失败 / 源分歧 / 专家指盲</small></div><span class="a" style="color:var(--loop)">→</span>
+    <div class="node" style="border-color:var(--loop);color:var(--loop);background:#fdfaf0">② 缺口登记<br><small style="font-weight:normal">五元组：缺什么/信号源/怎么补/成本/阻塞面</small></div><span class="a" style="color:var(--loop)">→</span>
+    <div class="node" style="border-color:var(--loop);color:var(--loop);background:#fdfaf0">③ 定级排序<br><small style="font-weight:normal">阻塞度 × 出现频率</small></div><span class="a" style="color:var(--loop)">→</span>
+    <div class="node" style="border-color:var(--loop);color:var(--loop);background:#fdfaf0">④ 补缺动作<br><small style="font-weight:normal">查权威源/找数据集/学标杆方法/自生成考题</small></div><span class="a" style="color:var(--loop)">→</span>
+    <div class="node" style="border-color:var(--loop);color:var(--loop);background:#fdfaf0">⑤ 复测销账<br><small style="font-weight:normal">缺口区自测通过才更新画像与总账</small></div><span class="a" style="color:var(--loop)">↻</span>
+  </div>
+  <div class="chips">
+    <span class="chip">三级来源标注：〔已验证·有出处〕〔模型记忆·待核对〕〔未知·缺口〕</span>
+    <span class="chip">答前门控三问：画像测过吗？总账覆盖了吗？哪些只是模型记忆？</span>
+    <span class="chip">知识不足时仅三种合法输出：降档作答 / 存而不论 / 缺口卡——自信完答被禁止</span>
+    <span class="chip">未知未知靠对外暴露：专家审查 / 社区发布（P5 / 阶段三机制）</span>
+    <span class="chip">机械执行体：scripts/da_toolbox.py（gate 答前门控三态裁决 / check 卡片校验 / stats 覆盖率与燃尽率）</span>
+  </div>
+</div>
+
+<!-- ================= PART 2 ================= -->
+<h2 class="part" id="s2">Part 2 · 通用自学路径：从零进入任意新领域<span class="en">参考人类学习流程提炼，领域无关、可复现</span></h2>
+<p class="lead">主干六阶段（P0–P5）＋三横支撑系统（全程并行）＋五道验收门＋五条回环。任何领域照此路径均可复现；领域特殊性只体现在各节点备注（见 Part 4），主干结构不变。</p>
+
+<div class="sys-band">
+  <div class="sys"><h4>S1 · 元认知系统（思考学习，全程并行）</h4><ul>
+    <li><b>学习日志</b>（每日三行：学了什么 / 卡在哪 / 明天怎么办）</li>
+    <li><b>周复盘 KPT</b>：Keep 保持 · Problem 问题 · Try 尝试</li>
+    <li><b>定期三问</b>：我在哪 / 要去哪 / 当前方法有效吗</li>
+    <li><b>费曼检测</b>排程：讲不清 = 没懂，标记回炉</li>
+    <li><b>目标再校准</b> → 触发回 P0 改宪章</li>
+  </ul></div>
+  <div class="sys"><h4>S2 · 知识管理系统（全程并行）</h4><ul>
+    <li><b>流程</b>：收集（一元化 Inbox）→ 蒸馏（提炼成卡）→ 归档（主题化）→ 召回（检索＋间隔复习）</li>
+    <li><b>原则</b>：一切笔记落到可核查出处</li>
+    <li><b>结构</b>：术语卡 · 概念卡 · 案例卡 · 方法卡</li>
+    <li><b>产出反哺</b>：P5 的内容创作直接从卡片长出</li>
+  </ul></div>
+  <div class="sys"><h4>S3 · 动机精力系统（全程并行）</h4><ul>
+    <li><b>进度可视化</b>：总进度文档 / 里程碑打卡</li>
+    <li><b>正反馈设计</b>：小成果早发布（S5 会前移奖励）</li>
+    <li><b>同伴与社区</b>：公开承诺 · 组队学习</li>
+    <li><b>止损线与休整</b>：防沉没成本绑架 · 防倦怠（精力管理与任务管理同权重）</li>
+  </ul></div>
+</div>
+
+<div class="stage-card c0">
+  <div class="stage-head"><span class="ph">P0</span><h3>定向 —— 学前决策</h3><span class="goal">为什么学 · 学到什么程度 · 花多少时间</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>三问定标</b>：为什么学（内在/外在动机）？学到什么程度（了解 / 会用 / 精通 / 触及前沿）？时间预算与节奏（每周几小时 × 多少个月）？</li>
+      <li><b>写学习宪章</b>（一页纸）：目标 · 验收标准（怎么算学成了，最好可检验）· 止损线（什么情况下允许放弃）· 节奏承诺</li>
+      <li><b>预演失败</b>：如果三个月后放弃了，最可能的三个原因是什么？提前写对策</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">学习宪章（一页纸）</span></div>
+      <div class="blk"><h4>验收门 ⓪</h4>一句话说清"为什么学 + 学到什么算成"，且验收标准可被第三方检验</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">目标过大（"精通 XX"）；无验收标准；无止损线（沉没成本绑架）</span></div>
+    </div>
+  </div>
+</div>
+<div class="flow-arrow"><div class="tri"></div></div>
+
+<div class="stage-card c1">
+  <div class="stage-head"><span class="ph">P1</span><h3>侦察 —— 信息搜集（画地图）</h3><span class="goal">广度优先，先框架后细节</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>广度扫描</b>：百科 / 高引综述 / 经典教材目录，至少 3 个独立来源交叉（防单源偏见）</li>
+      <li><b>画领域全景图</b>：子领域划分 · 主流流派及分歧 · 经典问题 · 活跃前沿 · 标杆人物与机构</li>
+      <li><b>建术语表</b>：50–100 个核心术语（新手最先撞上的墙就是黑话），逐步补"术语 ↔ 白话"对照</li>
+      <li><b>权威源分级</b>：★★★ 核心教材/综述/标杆社区 · ★★ 专题深化 · ★ 补充扩展；记录每个源的可信度理由</li>
+      <li><b>搭信息管道</b>：剪藏 / 稍后读 / RSS / 知识库 Inbox——让后续信息自动流向固定位置，而不是散落收藏夹</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">领域全景图 · 分级资源清单 · 术语表 · 信息管道</span></div>
+      <div class="blk"><h4>验收门 ①</h4>能徒手画出领域地图；说出 3 个主流流派 / 经典问题；知道遇到问题该去哪个社区问谁</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">陷入细节深挖（本阶段禁深读）；仓鼠症（只收藏不处理）；单源依赖</span></div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">＝领域学徒·阶段一（侦察立法）</span></div>
+</div>
+<div class="flow-arrow"><div class="tri"></div></div>
+
+<div class="stage-card c2">
+  <div class="stage-head"><span class="ph">P2</span><h3>筑基 —— 结构化输入（搭骨架）</h3><span class="goal">把领域的概念网络装进自己脑子</span><span class="loopmark">↩ 回 P1：发现资源缺口</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>分层阅读</b>（自顶向下）：综述 → 教材主干 → 专题章节 → 一手文献。先通读主干建立框架，再按需下钻——不要从第一页线性读到最后一页</li>
+      <li><b>主动阅读</b>（SQ3R 变体）：读前先写 3 个问题 → 带问题读 → 合上书自答 → 复述要点 → 隔日回顾</li>
+      <li><b>概念织网</b>：卡片笔记（术语→概念→原理→方法，一卡一事）；定期画概念地图，把新概念挂到已有网络上（孤立知识点最易忘）</li>
+      <li><b>费曼自测</b>：每学完一章，向假想的新人讲一遍；卡壳处标记回炉——这是"懂没懂"的唯一自检</li>
+      <li><b>间隔重复排程</b>：核心概念制成卡片进入复习系统（1 天 / 3 天 / 7 天 / 21 天递进），对抗遗忘曲线</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">概念地图 · 知识卡片库 · 科普级领域讲解</span></div>
+      <div class="blk"><h4>验收门 ②</h4>费曼测试：能向外行讲清领域核心概念及其相互关系，被追问三层不倒</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">划线式假阅读（划了≠懂了）；收藏 = 学会的错觉；追求线性读完而非按需下钻</span></div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">＝领域学徒·阶段一 SOP v1 + 数据基建（知识结构化入库）</span></div>
+</div>
+<div class="flow-arrow"><div class="tri"></div></div>
+
+<div class="stage-card c3">
+  <div class="stage-head"><span class="ph">P3</span><h3>校准 —— 刻意练习（已知答案闭环）</h3><span class="goal">用有标准答案的案例，量化"真懂了没"</span><span class="loopmark">↩ 回 P2：错误归因为知识缺口</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>选已知答案案例集</b>：教材习题 / 经典案例复现 / 有公认定论的问题——答案已知，过程要求与真实任务完全一致</li>
+      <li><b>独立作答</b>：不看答案全流程走一遍（禁止边看边做，那是自欺）</li>
+      <li><b>对照打分 + 失效分析</b>：每个错误归因到三类根因之一——知识缺口（回 P2）/ 方法缺陷（改流程）/ 熟练度不足（多练）</li>
+      <li><b>错题本</b>：错误 → 规则。每条失效转化为显式规则，同类错误不犯第二次</li>
+      <li><b>难度爬坡</b>：保持在约 85% 正确率的难度区间（太易无增长，太难则崩溃），逐级加码</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">校准报告 · 错题本（错误→规则）</span></div>
+      <div class="blk"><h4>验收门 ③</h4>已知答案案例复现率 ≥80%（或领域公认线）；失效模式已全部转化为规则</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">看答案再做（自欺）；只做舒服的题（舒适区滞留）；只对答案不归因</span></div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">＝领域学徒·阶段二（盲测校准 + 验收组）</span></div>
+</div>
+<div class="flow-arrow"><div class="tri"></div></div>
+
+<div class="stage-card c4">
+  <div class="stage-head"><span class="ph">P4</span><h3>实战 —— 项目驱动（真实产出）</h3><span class="goal">在真实约束下做出完整作品</span><span class="loopmark">↩ 回 P1/P2：实战暴露基础缺口</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>选真实约束项目</b>：真实数据 / 真实受众 / 真实交付标准——规模适中但不是玩具</li>
+      <li><b>以终为始</b>：先定义交付物（作品长什么样），倒推能力清单与学习需求——学的每一课都有明确去处</li>
+      <li><b>建反馈回路</b>：行业标准对照 · 社区评审（把作品发到会被内行看到的地方）· 专家请教（带着具体问题去，不带"求指导"）</li>
+      <li><b>卡壳定向补课</b>：允许并预期回环——实战暴露的缺口回到 P1/P2 定向补，而不是从头再学一遍</li>
+      <li><b>过程留档</b>：决策日志（为什么这么做），它比结果更值钱——是 P5 创作的素材，也是复盘依据</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">完整作品 · 过程档案（决策日志）</span></div>
+      <div class="blk"><h4>验收门 ④</h4>作品经得起行业标准 / 第三方评审（不是自我感觉良好）</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">教程地狱（只看教程永远不开始）；完美主义拖延（憋大招）；无反馈裸奔</span></div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">＝领域学徒·阶段四 RSI 循环（批量真实任务）＋ 阶段三（审查＝反馈回路制度化）</span></div>
+</div>
+<div class="flow-arrow"><div class="tri"></div></div>
+
+<div class="stage-card c5">
+  <div class="stage-head"><span class="ph">P5</span><h3>创造 —— 内容创作与贡献（出师）</h3><span class="goal">输出倒逼输入，从消费者变成贡献者</span><span class="loopmark">↩ 回 P2/P3：教学暴露盲区</span></div>
+  <div class="stage-body">
+    <div class="acts"><ol>
+      <li><b>输出金字塔爬升</b>：学习笔记 → 教程 / 文章 → 工具 / 项目 → 原创贡献（逐级要求更高的理解度，每级都公开）</li>
+      <li><b>教学相长</b>：写作 · 演讲 · 带新人 · 社区答疑——教是最强的学（备课逼你补全每个含糊处）</li>
+      <li><b>跨域重组</b>：把领域 A 的框架类比到领域 B（个人独特视角往往来自跨界），寻找自己的表述角度</li>
+      <li><b>进入社区身份进阶</b>：提问者 → 回答者 → 协作者 → 组织者；知识资产持续沉淀（个人知识库长期复利）</li>
+      <li><b>诚实定性</b>：区分复现 / 归纳 / 原创；引用规范，声誉是长期资产</li>
+    </ol></div>
+    <div class="meta">
+      <div class="blk"><h4>产 出</h4><span class="produce">公开内容集 · 社区身份 · 个人知识资产 ·（可能的）原创增量</span></div>
+      <div class="blk"><h4>验收门 ⑤</h4>公开输出获得领域内真实反馈 / 引用 / 认可（被内行认真对待，而非礼貌点赞）</div>
+      <div class="blk"><h4>常见坑</h4><span class="pit">憋大招不发布；复读式"创作"无增量；闭门造车不看同行的既有输出</span></div>
+    </div>
+  </div>
+  <div class="chips"><span class="chip">＝领域学徒·成果沉淀 + 诚实定性 + 对外输出</span></div>
+</div>
+
+<div class="loop-box">
+  <h4>▎回环机制（非线性流水线——上图所有 ↩ 的汇总）</h4>
+  <table>
+    <tr><td>P2 → P1</td><td>发现资源缺口 / 单源偏见 → 回侦察补权威源</td></tr>
+    <tr><td>P3 → P2</td><td>错误归因为知识缺口 → 回筑基定向补概念（不是从头学）</td></tr>
+    <tr><td>P4 → P1 / P2</td><td>实战暴露基础缺口 → 定向回补（预期内，不是失败）</td></tr>
+    <tr><td>P5 → P2 / P3</td><td>教学 / 创作暴露盲区 → 回炉相应阶段</td></tr>
+    <tr><td>S1 → P0</td><td>定期目标再校准：领域变了 / 兴趣变了 / 进度超预期 → 回定向改宪章（含主动放弃决策）</td></tr>
+  </table>
+</div>
+
+<!-- ================= PART 3 ================= -->
+<h2 class="part" id="s3">Part 3 · 同源映射：人类自学路径 ↔ 学徒 Skill<span class="en">两套流程本是同一套学习原理</span></h2>
+<table class="map">
+  <tr><th>通用路径（人类）</th><th>领域学徒（AI）</th><th>共同的学习科学原理</th></tr>
+  <tr><td>P0 定向（学习宪章）</td><td>冷启动确认（领域 / 目标产出 / 验收谁定）</td><td>自我调节学习·前思阶段（Zimmerman）：目标设定与策略规划</td></tr>
+  <tr><td>P1 侦察（画地图）</td><td>阶段一 · 侦察立法（调研五件套，含知识总账）</td><td>先行组织者（Ausubel）：先框架后细节，图式先行</td></tr>
+  <tr><td>P2 筑基（概念织网）</td><td>SOP v1 + 数据基建（知识结构化入库）</td><td>图式建构：新知挂上网络才留存；精细加工</td></tr>
+  <tr><td>P3 校准（已知答案闭环）</td><td>阶段二 · 最小闭环（盲测 + 验收组）</td><td>测试效应（主动回忆）＋ 合意困难（85% 规则）</td></tr>
+  <tr><td>反馈回路（老师批改 / 对答案）</td><td>阶段三 · 审查对拍（制审分离 + 共识对拍）</td><td>反馈回路 + 同伴评审（peer review）：外部校准防自欺</td></tr>
+  <tr><td>P4 实战（项目驱动）</td><td>阶段四 · RSI 循环（批量真实任务）</td><td>刻意练习（Ericsson）：真实场景 + 即时反馈 + 难度递增</td></tr>
+  <tr><td>P5 创造（教学与输出）</td><td>成果沉淀 + 对外输出 + 诚实定性</td><td>门徒效应（protégé effect）：为教而学，理解更深</td></tr>
+  <tr><td>S1 元认知（日志 / 复盘 / 三问）</td><td>总进度文档 + 阶段门控 + 执行声明</td><td>元认知监控（Flavell）＋ 自我调节学习·自省阶段</td></tr>
+  <tr><td>S2 知识管理（出处落地）</td><td>铁律①：可核查性压倒一切</td><td>生成效应 + 反幻觉：写下来并给出处，才真正 owned</td></tr>
+  <tr><td>错题本（错误→规则）</td><td>铁律⑦：错误变制度（红线固化）</td><td>错误驱动学习 / 超校正效应：高置信错误纠正后记得最牢</td></tr>
+</table>
+<div class="note"><h4>▎结论</h4>领域学徒 Skill 不是"AI 特殊工作法"，而是人类成熟学习范式（自我调节学习 + 刻意练习 + 反馈回路）在 AI 上的工程化投影。反过来，通用自学路径也吸收了 Skill 实战中人类常规学习欠缺的机制：<b>制审分离</b>（自我批改无效，需独立视角）、<b>已知答案量化验收</b>（对抗"感觉学会了"）、<b>错误变制度</b>（错题本升格为流程红线）。</div>
+
+<!-- ================= PART 4 ================= -->
+<h2 class="part" id="s4">Part 4 · 通用性总结与领域特殊化备注<span class="en">主干领域无关，特殊性只在备注</span></h2>
+
+<div class="note"><h4>▎八条通用模式（跨领域不变量，任何领域照此复现）</h4>
+  <ol class="pattern-list">
+    <li><b>地图先行</b>：广度优先扫描建立全景，再按需深钻（P1→P2）</li>
+    <li><b>结构化输入</b>：分层阅读 + 概念织网，新知必须挂网（P2）</li>
+    <li><b>已知答案校准</b>：用有定论的案例量化真懂程度，对抗自我感觉（P3）</li>
+    <li><b>真实项目产出</b>：以终为始，学的每课有去处（P4）</li>
+    <li><b>输出倒逼输入</b>：费曼检测贯穿，教学是最高形式的学习（P2/P5）</li>
+    <li><b>全程反馈回环</b>：元认知 + 独立审查 + 共识对拍，外部校准防自欺（S1/门控）</li>
+    <li><b>错误变制度</b>：错题本 / 红线固化，同类错误不犯第二次（P3/RSI）</li>
+    <li><b>知识可核查</b>：一切结论与笔记落到出处，区分"我验证过"与"我听说的"（S2）</li>
+  </ol>
+</div>
+
+<table class="map">
+  <tr><th>通用节点</th><th>甲骨文释读<br>（原型领域备注）</th><th>编程</th><th>语言学习</th><th>临床医学</th></tr>
+  <tr><td>P0 验收标准</td><td>释读档案证据链达悬赏论证格式</td><td>能独立交付上线项目</td><td>能就专业话题流畅交流</td><td>通过执业考核独立值班</td></tr>
+  <tr><td>P1 权威源 ★★★</td><td>殷契文渊 / HUST-OBC / 字编</td><td>官方文档 / 经典书 / 源码</td><td>原声材料 / 权威教材</td><td>指南 / 教科书 / 循证数据库</td></tr>
+  <tr><td>P3 已知答案集</td><td>学界定论字（雨/祸/亡…）</td><td>测试用例 / 经典项目复现</td><td>带原文的音频/文本</td><td>已确诊病例 / 习题</td></tr>
+  <tr><td>反馈·独立审查</td><td>子代理盲审（禁采信档案）</td><td>Code Review / 生产监控</td><td>母语者纠正 / 考试</td><td>主治医师把关 / 病例讨论</td></tr>
+  <tr><td>行业共识对拍</td><td>已刊释文逐字对拍</td><td>生产环境表现 / 基准测试</td><td>真实交流可懂度</td><td>循证指南 / 预后对照</td></tr>
+  <tr><td>P4 实战项目</td><td>批量未释字建档</td><td>开源项目 / 真实需求</td><td>目标语言生活/工作植入</td><td>轮科临床工作</td></tr>
+  <tr><td>P5 输出形态</td><td>释读报告 / 论证材料</td><td>开源贡献 / 技术博客</td><td>教学 / 翻译 / 内容创作</td><td>病例报告 / 综述 / 指南意见</td></tr>
+  <tr><td>诚实定性线</td><td>复现 ≠ 新破译（不可申报）</td><td>复刻 ≠ 原创作品</td><td>背诵 ≠ 交际能力</td><td>做题 ≠ 临床能力</td></tr>
+</table>
+
+<div class="note"><h4>▎科学注脚（本路径依据的学习科学，供深查）</h4>
+  测试效应（retrieval practice：主动回忆优于重读）· 间隔重复（spaced repetition：对抗遗忘曲线）· 合意困难与 85% 规则（desirable difficulty：最优难度区间）· 先行组织者（advance organizers：先框架后细节）· 生成效应（generation effect：自己产出记得更牢）· 精细加工与自我解释（elaboration &amp; self-explanation）· 费曼技巧（以教代学的自我解释变体）· 刻意练习（deliberate practice：目标/专注/反馈/出舒适区四要素）· 自我调节学习三阶段（Zimmerman：前思—表现—自省，对应 P0—执行—S1）· 元认知监控（Flavell）· 错误驱动学习与高校正效应（hypercorrection effect）· 门徒效应（protégé effect：为教而学）
+</div>
+
+<footer>
+  学徒 Skill（apprentice）· 学习路线图 v1.3（v1.3 双轨模型：通识轨领域课程×实战轨四阶段互喂；v1.2 五件套一致性；v1.1 知识完整性机制）· 依据：本 skill 包 SKILL.md + references + scripts + assets + 甲骨文破译实战复盘<br>
+  本图与 <code>references/universal-path.md</code>（可复现操作手册）配套；流程领域无关，特殊性仅存于备注表
+</footer>
+
+</div>
+</body>
+</html>
