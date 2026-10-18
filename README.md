@@ -30,22 +30,29 @@
 
 行业知识七形态中只有"模型权重里的隐性记忆"不可证（乱答唯一来源）。对策：权威普查工件对照算覆盖率、任务空间地图×分层抽测×能力画像、答前门控三问、缺口驱动学习循环（巡检→登记→定级→补缺→复测销账）。
 
+## 插件架构（本体稳定，扩展外挂）
+
+apprentice 主干不改，新能力以独立插件接入（可单独使用，缺席有降级路径）：
+
+- **`lrv-loop`（学述验闭环）**——AI 自学的 ReAct 式最小引擎：**学习 → 合卷复述 → 比对验证** 循环直至通过。核心机制是**验证基准的期别演进**：早期对拍行业共识（E 共识期）→ 中期用已验证自库＋共识双查（M 混合期）→ 后期以自主结论为基准（L 自主期，带矛盾升级条款——与既有结论冲突时双方降回共识复核）。解锁条件由 `lrv.py` 机械强制，"自己的结论能当验证基准"是靠共识期履历挣来的信用等级，不是免检。接入 apprentice 通识轨的"学＋测"环节；未安装时 apprentice 按内置学习提示词模板手工执行同等协议。
+
+```bash
+# 插件安装（可选）：
+cp -r apprentice-skill/plugins/lrv-loop ~/.agents/skills/lrv-loop
+```
+
 ## 仓库结构
 
 ```
-apprentice/
-├── SKILL.md                       # 主程序：双轨四阶段+12铁律+门控+SOP生成规范
-├── references/
-│   ├── knowledge-coverage.md      # 知识完整性：七形态/覆盖率/画像/缺口循环/防乱答协议
-│   ├── learning-prompts.md        # 通识轨6套学习提示词模板（概念卡/自测/费曼/复盘/联想）
-│   ├── universal-path.md          # 通用自学路径（人类版：P0-P5×三支撑×门控×回环）
-│   ├── oracle-case.md             # 甲骨文破译完整案例复盘（四阶段实战原型）
-│   └── templates.md               # 10份可复制档案模板（调研/SOP/验收/审核/研究卡/总进度）
-├── scripts/
-│   └── da_toolbox.py              # 配套工具箱：知识总账/缺口登记簿/能力画像(SQLite账本)
-│                                  #   + gate答前门控三态裁决 + check卡片机械校验 + stats
-└── assets/
-    └── 学习路线图.html             # 全景可视化（双轨流程图/通用路径/同源映射/领域备注）
+apprentice-skill/
+├── apprentice/                    # 学徒 Skill 本体（拷入 ~/.agents/skills/apprentice）
+│   ├── SKILL.md                   # 双轨四阶段+12铁律+门控+插件接入节
+│   ├── references/                # knowledge-coverage / learning-prompts / universal-path /
+│   │                              #   oracle-case / templates
+│   ├── scripts/da_toolbox.py      # 知识总账/缺口登记簿/能力画像账本+答前门控+卡片校验
+│   └── assets/学习路线图.html      # 全景可视化
+└── plugins/
+    └── lrv-loop/                  # 外挂插件：学述验闭环（SKILL.md + scripts/lrv.py）
 ```
 
 ## 安装
