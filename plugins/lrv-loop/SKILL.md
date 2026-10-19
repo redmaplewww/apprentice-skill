@@ -87,6 +87,8 @@ lrv-loop 是**外挂组件**，apprentice 以插件方式接入，双向都不�
 - **缺席降级**：lrv-loop 未安装时，apprentice 按内置 `references/learning-prompts.md` 模板二/三/四手工执行同等协议，流程不断；
 - **独立运行**：脱离 apprentice 也可单独用（任何学习任务套 L-R-V 三步即可）。
 
+> **范式扩展（LAVS）**：以本组件为认知内核的 agent 编排范式见 `references/paradigm-LAVS.md`——学(L·思入)→行(A·纯执行)→核(V·双位比对)→结(S·思出沉淀)四节点替换 ReAct 的 T/A/O，设计原则"思不出环，环环外锚"，含长程任务协议（规格书/里程碑门/目标对齐巡检）与漂移量化四指标。
+
 ## 五、红线
 
 1. 复述必须合卷——开着材料"复述"等于没测；
